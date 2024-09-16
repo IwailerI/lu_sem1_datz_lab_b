@@ -24,6 +24,7 @@ int get_divisor_sum(int num) {
     }
 
     // Any number is divisible by 1, so we start with it.
+    // (Degenerate case of num==1 is handled earlier)
     int res = 1;
 
     // div is declared outside the loop, to have access to it afterwards.
@@ -39,9 +40,9 @@ int get_divisor_sum(int num) {
         }
     }
 
-    // Separate handling of case when num is a perfect square.
+    // Separate handling of the case when num is a perfect square.
     // Divisor that is a square root of a number only needs to be added once.
-    if (div * div == num) {
+    if (num > 1 && div * div == num) {
         res += div;
     }
 
@@ -53,21 +54,21 @@ int get_divisor_sum(int num) {
 ///
 /// Finds all pairs of natural numbers (a, b) satisfying the following
 /// conditions:
-/// - a <= n;
-/// - b <= n;
+/// - 1 <= a <= n;
+/// - 1 <= b <= n;
 /// - a is equal to sum of all divisors of b, except b itself;
 /// - b is equal to sum of all divisors of a, except a itself;
 /// @note Pairs (x, y) and (y, x) are considered different and returned
 /// separately.
 /// @param n largest value of a and b allowed
 /// @return Vector of pairs containing the solution. Result is sorted in
-/// ascending order by first pair key.
+/// ascending order by first elements of pairs.
 PairVector find_pairs(int n) {
-    if (n <= 0) {
+    if (n <= 1) {
         return {};
     }
 
-    PairVector result({{1, 1}});
+    PairVector result;
 
     for (int a = 1; a <= n; a++) {
         int b = get_divisor_sum(a);
